@@ -1,5 +1,3 @@
-prediction = "";
-
 Webcam.set({
     width: 350,
     height: 300,
@@ -27,7 +25,43 @@ function modelLoaded() {
 
 function speak() {
     var synth = window.speechSynthesis;
-    var speak_data = "The Prediction Is "+prediction;
+    var speak_data = toSpeak;
     var utterThis = new SpeechSynthesisUtterance(speak_data);
     synth.speak(utterThis);
+}
+
+function check()
+{
+  img = document.getElementById('captured_image');
+  classifier.classify(img, gotResult);
+}
+
+
+function gotResult(error, results) {
+if (error) {
+  console.error(error);
+} else {
+  console.log(results);
+  document.getElementById("result_gesture_name").innerHTML = results[0].label;
+  gesture = results[0].label;
+  toSpeak="";
+  speak();
+  if(gesture == "Amazing")
+  {
+      toSpeak = "This is looking amazing "
+      document.getElementById("update_emoji").innerHTML = "&#128076;";
+  }
+  else if(gesture == "Best")
+  {
+      toSpeak = "All the best"
+      document.getElementById("update_emoji").innerHTML = "&#128077;";
+  }
+  else if(gesture == "Victory")
+  {
+      toSpeak = "That was a marvelous victory"
+      document.getElementById("update_emoji").innerHTML = "&#9996;";
+  }
+
+ 
+}
 }
